@@ -28,4 +28,10 @@ struct Coordinates{
         return x == other.x && y == other.y;
     }
 };
+
+struct ShipSegment{
+    Coordinates coords;
+    ShipStatus status;
+    ShipSegment(Coordinates coords, ShipStatus status) : coords(coords), status(status) {}
+};
 #endif

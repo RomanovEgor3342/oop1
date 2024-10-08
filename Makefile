@@ -15,7 +15,7 @@ SRCS = $(wildcard main.cpp $(SRC_DIR)/*.cpp)
 OBJS = $(SRCS:.cpp=.o)
 
 # Имя исполняемого файла
-TARGET = my_program
+TARGET = sb
 
 # Правило по умолчанию: сборка всего проекта
 all: $(TARGET)
