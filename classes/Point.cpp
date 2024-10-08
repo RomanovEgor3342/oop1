@@ -17,4 +17,5 @@ PointStates Point::getPointState(){
 
 Coordinates Point::getPosition(){
     return position;
+    
 }
