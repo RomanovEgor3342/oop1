@@ -5,21 +5,19 @@
 #include <iostream>
 #include "Ship.h"
 
-using namespace std;
+// using namespace std;
 
 class ShipManager{
 private:
 
-    vector<Ship> ships;
+    std::vector<std::shared_ptr<Ship>> ships;
+    void updateShips();
 
 public:
-    // ShipManager(int shipsAmount, vector<int> lengths);
+    ShipManager(int shipsAmount, std::vector<int> sizes);
 
-    // void addShip(shared_ptr<Ship> &newShip);
-    // void attackShipByCoordiantes(Coordinates coords);
-
-    void setDamageToSegment(Coordinates coords);
-
+    std::vector<std::shared_ptr<Ship>> getShips();
+    void printShips();
 
 
 

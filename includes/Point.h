@@ -8,14 +8,16 @@ class Point {
 private:
     PointStates state;
     Coordinates position;
-    std::unique_ptr<ShipSegment> shipSegPtr;
+    std::shared_ptr<ShipSegment> shipSegPtr;
 
 public:
     Point(PointStates state, Coordinates coords);
     void changeState(PointStates newState);
-    void setCoordinates(Coordinates newCoords);
+    // void setCoordinates(Coordinates newCoords);
     PointStates getPointState();
-    Coordinates getPosition();
+    // Coordinates getPosition();
+    void setPtrOnSegment(std::shared_ptr<ShipSegment> segment);
+    void changeShipSegmentByPtr(ShipStatus newState);
 };
 
 #endif

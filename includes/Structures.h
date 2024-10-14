@@ -7,11 +7,12 @@ enum class PointStates {
     DamagedShip,
     DestroyedShip,
     Unknown,
+    Attacked
 };
 
 enum class Orientation{
     Vertical,
-    Hotizontal
+    Horizontal
 };
 
 enum class ShipStatus{
@@ -29,9 +30,11 @@ struct Coordinates{
     }
 };
 
+
 struct ShipSegment{
     Coordinates coords;
     ShipStatus status;
     ShipSegment(Coordinates coords, ShipStatus status) : coords(coords), status(status) {}
 };
+
 #endif

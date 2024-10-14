@@ -7,15 +7,21 @@ Point::Point(PointStates state, Coordinates coords)
 void Point::changeState(PointStates newState) {
     state = newState;
 }
-void Point::setCoordinates(Coordinates newCoords){
-    this->position = newCoords;
-}
+// void Point::setCoordinates(Coordinates newCoords){
+//     this->position = newCoords;
+// }
 
 PointStates Point::getPointState(){
     return state;
 }
-
-Coordinates Point::getPosition(){
-    return position;
-    
+void Point::setPtrOnSegment(std::shared_ptr<ShipSegment> segment) {
+    shipSegPtr = segment;
 }
+
+void Point::changeShipSegmentByPtr(ShipStatus newState){
+    shipSegPtr->status = newState;
+}
+// Coordinates Point::getPosition(){
+//     return position;
+
+// }
