@@ -21,6 +21,13 @@ enum class ShipStatus{
     Destroyed
 };
 
+enum ShipLengths{
+    ONE = 1,
+    TWO = 2,
+    THREE = 3,
+    FOUR = 4
+};
+
 struct Coordinates{
     int x;
     int y;
@@ -30,11 +37,10 @@ struct Coordinates{
     }
 };
 
-
 struct ShipSegment{
     Coordinates coords;
     ShipStatus status;
-    ShipSegment(Coordinates coords, ShipStatus status) : coords(coords), status(status) {}
+
 };
 
 #endif

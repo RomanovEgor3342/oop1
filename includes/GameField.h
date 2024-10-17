@@ -9,10 +9,8 @@
 #include <iomanip>
 #include <random>
 #include <stdexcept>
-// #include <ctime>
 #include <chrono>
 
-// using namespace std;
 
 class GameField{
 private:
@@ -20,9 +18,15 @@ private:
     int height;
     std::vector<std::vector<Point>> field;
     void checkCoordsValidity(Coordinates coords);
-    // std::mt19937 gen;
+
 public:
     GameField(int rows, int columns) noexcept;
+    GameField(const GameField &other) noexcept;
+    GameField &operator=(const GameField &other) noexcept;
+    GameField(GameField &&other) noexcept;
+    GameField &operator=(GameField &&other) noexcept;
+    ~GameField () noexcept {};
+
     void placeShipOnCoords(std::shared_ptr<Ship> &ship, Coordinates coords, Orientation orint, bool useDebug = true);
     void placeShipOnRandCoords(std::shared_ptr<Ship> &ship) noexcept;
     void damagePoint(Coordinates coords);

@@ -5,21 +5,18 @@
 #include <iostream>
 #include "Ship.h"
 
-// using namespace std;
 
 class ShipManager{
 private:
-
     std::vector<std::shared_ptr<Ship>> ships;
-    void updateShips();
+    void updateShips() noexcept;
 
 public:
-    ShipManager(int shipsAmount, std::vector<int> sizes);
+    ShipManager(int shipsAmount, std::vector<ShipLengths> sizes) noexcept;
+    ~ShipManager() noexcept {};
 
-    std::vector<std::shared_ptr<Ship>> getShips();
-    void printShips();
-
-
+    std::vector<std::shared_ptr<Ship>> getShips() noexcept;
+    void printShips() noexcept;
 
 };
 

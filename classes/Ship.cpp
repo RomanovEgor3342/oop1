@@ -1,30 +1,22 @@
 #include "../includes/Ship.h"
 
-// Ship::Ship(int size, Orientation orint, Coordinates headPositionPosition) 
-//     : length(size), orientation(orint), headPosition(headPositionPosition){
-//         for (int i = 0; i < size; i++){
-//             segments.emplace_back(
-//                 (orientation == Orientation::Vertical) ?
-//                 Coordinates{headPosition.x, headPosition.y + i} :
-//                 Coordinates{headPosition.x + i, headPosition.y},
-//                 ShipStatus::Intact
-//             );
-//         }
-//     };
-
-
-
-Ship::Ship(int size):
+Ship::Ship(ShipLengths size) noexcept:
     headPosition(Coordinates{0, 0}), orientation(Orientation::Horizontal),
     status(ShipStatus::Intact){
-        for (int i = 0; i < size; ++i) {
-            ShipSegment segment(Coordinates{0, 0}, ShipStatus::Intact);
-            segments.push_back(std::make_shared<ShipSegment>(segment));
+        for (int i = 0; i < static_cast<int>(size); ++i) {
+            segments.push_back(
+                std::make_shared<ShipSegment>(
+                    ShipSegment{
+                        Coordinates{0, 0}, 
+                        ShipStatus::Intact
+                    }
+                )
+            );
         }
     };
 
 
-bool Ship::isDestroyed(){
+bool Ship::isDestroyed() noexcept{
     for (auto &seg : segments){
         if (seg->status != ShipStatus::Destroyed) {
             return false;
@@ -33,18 +25,22 @@ bool Ship::isDestroyed(){
     return true;
 }
 
-int Ship::getLength(){
+int Ship::getLength() noexcept{
     return segments.size();
 }
 
-void Ship::changeOrientation(Orientation newOrientation){
-    // this->orientation = newOrientation;
+void Ship::changeOrientation(Orientation newOrientation) noexcept{
     if (orientation != newOrientation) {
         this->orientation = newOrientation;
         setPosition(this->headPosition);
     }
 }
 void Ship::setPosition(Coordinates coords){
+
+    if (coords.x < 0 || coords.y < 0){
+        throw std::out_of_range("Incorrect coordinates");
+    }
+
     this->headPosition = coords;
     for (int i = 0; i < segments.size(); i++){
         segments[i]->coords = (orientation == Orientation::Vertical) 
@@ -57,12 +53,11 @@ std::shared_ptr<ShipSegment> Ship::getSegment(unsigned int index){
     if (index < segments.size()){
         return segments[index];
     } 
-    std::cout << "Incorrect segment index " << index << '\n';
-    return nullptr;
+    throw std::runtime_error("Incorrect segment index");
 }
 
-
-void Ship::updateStatus(){
+void Ship::updateStatus() noexcept{
+    
     if (this->isDestroyed()){
         this->status = ShipStatus::Destroyed;
         return;
@@ -76,7 +71,7 @@ void Ship::updateStatus(){
     }
 }
 
-void Ship::printShip(){
+void Ship::printShip() noexcept{
 
     int colWidth = 15;
 
@@ -96,15 +91,6 @@ void Ship::printShip(){
 
     std::cout << std::left << std::setw(colWidth) << "Position" 
          << "(" << headPosition.x << "; " << headPosition.y << ")" << "\n";
-
-    // std::cout << std::left << std::setw(colWidth) << "Segment" 
-    //      << std::setw(colWidth) << "Coordinates" << "\n";
-    // std::cout << std::string(2 * colWidth, '-') << "\n";
-
-    // for (size_t i = 0; i < segments.size(); ++i) {
-    //     std::cout << std::left << std::setw(colWidth) << ("Segment ") 
-    //          << '{' << segments[i]->coords.x << ", " << segments[i]->coords.y << "}" << "\n";
-    // }
 
     std::cout << std::string(2 * colWidth, '_') << "\n\n";  
 }

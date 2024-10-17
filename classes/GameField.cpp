@@ -12,6 +12,48 @@ GameField::GameField(int rows, int columns) noexcept:
         }
     }
 
+GameField::GameField(const GameField &other) noexcept:
+    width(other.width), height(other.height), field(other.field) {
+    field.resize(height);
+    for (int y = 0; y < height; ++y) {
+        field[y].reserve(width);
+        for (int x = 0; x < width; ++x) {
+            field[y][x] = Point(other.field[y][x]);
+        }
+    }
+}
+
+GameField& GameField::operator=(const GameField& other) noexcept {
+    if (this != &other) {
+        width = other.width;
+        height = other.height;
+        field.resize(height);
+        for (int y = 0; y < height; ++y) {
+            field[y].reserve(width);
+            for (int x = 0; x < width; ++x) {
+                field[y][x] = Point(other.field[y][x]);
+            }
+        }
+    }
+    return *this;
+}
+
+GameField::GameField(GameField&& other) noexcept: height(other.height), width(other.width), field(std::move(other.field)) {
+    other.height = 0;
+    other.width = 0;
+}
+
+GameField& GameField::operator=(GameField&& other) noexcept{
+    if (this != &other) {
+        height = other.height;
+        width = other.width;
+        field = std::move(other.field);
+        other.height = 0;
+        other.width = 0;
+    }
+    return *this;
+}
+
 void GameField::checkCoordsValidity(Coordinates coords){
     if ((coords.x < 0 || coords.y < 0) || (coords.x >= width || coords.y >= height)){
         throw std::out_of_range("Incorrect coordinates");
@@ -108,7 +150,7 @@ void GameField::placeShipOnCoords(
         field[x][y].changeState(PointStates::Ship);
         field[x][y].setPtrOnSegment(ship->getSegment(i));
     }
-
+    
     ship->setPosition(Coordinates{coords.x, coords.y});
 }
 
@@ -128,7 +170,6 @@ void GameField::placeShipOnRandCoords(std::shared_ptr<Ship> &ship) noexcept{
     int rand_y = (int)(dist(gen) % height);
     bool rand_ort = (int)(dist(gen)) % 2 == 0;
 
-    std::cout << rand_x << " " << rand_y << std::endl;
     while(!isShipPlaced){
         try {
             placeShipOnCoords(
@@ -172,7 +213,7 @@ void GameField::damagePoint(Coordinates coords){
         break;
     
     case PointStates::Unknown:
-    // case PointStates::Empty:
+    case PointStates::Empty:
         field[coords.x][coords.y].changeState(PointStates::Attacked);
 
     default:
@@ -180,57 +221,3 @@ void GameField::damagePoint(Coordinates coords){
         break;
     }
 }
-
-
-// void GameField::linkToField(GameField &other){
-    
-// }
-
-// void moveCursorTo(int row, int col) {
-//     std::cout << "\033[" << row << ";" << col << "H";
-// }
-
-// void GameField::printField(int row, int column) {
-//     // Переход к указанной позиции перед выводом заголовка
-//     moveCursorTo(row, column);
-    
-//     std::cout << "   "; // Пустое пространство для координат
-//     for (int i = 0; i < width; i++) {
-//         std::cout << (char)('A' + i) << ' ';
-//     }
-    
-//     // Перемещение курсора и вывод разделительной линии
-//     moveCursorTo(row + 1, column);
-//     std::cout << "  ";
-//     for (int i = 0; i < width; i++) {
-//         std::cout << "--";
-//     }
-
-//     // Основной цикл вывода поля
-//     for (int x = 0; x < width; x++) {
-//         moveCursorTo(row + 2 + x, column);  // Переход на нужную строку для вывода
-//         std::cout << x << "| ";  // Вывод номера строки
-        
-//         for (int y = 0; y < height; y++) {
-//             // В зависимости от состояния точки поля, выводим соответствующий символ
-//             switch (field[y][x].getPointState()) {
-//                 case PointStates::Ship:
-//                     std::cout << "\033[32m" << "% " << "\033[0m";  // Зеленый цвет
-//                     break;
-//                 case PointStates::DamagedShip:
-//                     std::cout << "\033[33m" << "\033[44m" << "# " << "\033[0m";  // Желтый цвет на синем фоне
-//                     break;
-//                 case PointStates::DestroyedShip:
-//                     std::cout << "\033[31m" << "X " << "\033[0m";  // Красный цвет
-//                     break;
-//                 case PointStates::Unknown:
-//                     std::cout << "0 ";  // Неизвестная клетка
-//                     break;
-//                 default:
-//                     std::cout << "0 ";  // Любое другое состояние также отображаем как "0"
-//                     break;
-//             }
-//         }
-//     }
-//     std::cout << "\n"<< std::endl;
-// }
