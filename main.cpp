@@ -10,7 +10,7 @@ int main(){
     GameField field(10, 10);
     GameField enemyField(10, 10);
 
-    ShipManager manager(4, std::vector<ShipLengths>{One, One, Four, Four});
+    ShipManager manager(4, std::vector<ShipLengths>{ONE, ONE, FOUR, FOUR});
     // ShipManager manager(3, std::vector<int>{1, 1, 4});
     // ShipManager botManager(10, std::vector<int>{1, 1,1, 1, 2,2, 2, 3,3, 4});
 
